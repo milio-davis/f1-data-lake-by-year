@@ -6,7 +6,7 @@ This Lambda function uploads F1 data to an AWS S3 bucket. It creates and stores 
 - Gets Ergast F1 data API for the desired year
 - Creates Pandas DataFrames 
 - Converts them to CSV
-- Uploads to your configured S3 bucket
+- Uploads to configured S3 bucket
 
 ## 📦 Requirements
 pip install -r requirements.txt
