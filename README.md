@@ -1,22 +1,16 @@
 # f1-data-lake-by-year
 ## F1 Data Lake & Analysis on AWS
 
-Beginner Project: F1 Data Lake and Analysis with S3 + Athena + Glue. 
-Goal: Build a centralized data lake for historical F1 race data. This project demonstrates how to build a lightweight data lake on AWS using Formula 1 data. 
+<img src="https://github.com/user-attachments/assets/57f39ce2-7899-40d2-9121-02c367975a4e" alt="drawing" height="60%" />
 
-Tech Stack:
-*Lambda Python: Data ingestion*
-*S3: Raw data storage*
-*Glue: Crawler & Catalog*
-*Athena: SQL-based analysis* 
-*QuickSight: Dashboard*
- 
-1. Ingest public F1 data with AWS Lambda
-- Ergast F1 API ↓
-- AWS Lambda (Ingestion script) ↓
-2. Store it in Amazon S3
-- AWS S3 (Raw Data) ↓
-3. Catalog it with AWS Glue
-- AWS Glue Crawler → AWS Glue Data Catalog ↓
-4. Query it with AWS Athena
-5. View it with AWS QuickSight
+![image](https://github.com/user-attachments/assets/580c2226-7a9d-4c73-92aa-9f49e83c10be)
+
+Project: F1 Data Lake and Analysis with S3 + Glue + Athena. 
+Goal: Build a centralized data lake for historical F1 race data. This project demonstrates how to build a lightweight data lake on AWS using Formula 1 data for the desired year. 
+
+AWS Tech Stack:
+1. *Lambda Python: Public F1 API data ingestion*
+2. *S3: Raw CSV data storage*
+3. *Glue: Crawler, Data & Schema Catalog*
+4. *Athena: SQL-based analysis*
+5. *QuickSight: Dashboard*
