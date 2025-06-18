@@ -8,18 +8,15 @@ Tech Stack:
 *Lambda Python: Data ingestion*
 *S3: Raw data storage*
 *Glue: Crawler & Catalog*
-*Athena: SQL-based analysis*
+*Athena: SQL-based analysis* 
 *QuickSight: Dashboard*
-
+ 
 1. Ingest public F1 data with AWS Lambda
-2. Store it in Amazon S3
-3. Catalog it with AWS Glue
-4. Query it with AWS Athena
-5. View it with AWS QuickSight
-
 - Ergast F1 API ↓
 - AWS Lambda (Ingestion script) ↓
+2. Store it in Amazon S3
 - AWS S3 (Raw Data) ↓
+3. Catalog it with AWS Glue
 - AWS Glue Crawler → AWS Glue Data Catalog ↓
-- AWS Athena (SQL Queries) ↓
-- AWS QuickSight
+4. Query it with AWS Athena
+5. View it with AWS QuickSight
