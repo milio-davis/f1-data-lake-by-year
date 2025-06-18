@@ -102,10 +102,10 @@ def lambda_handler(event, context):
 
     # Upload to S3
     print("Uploading drivers, constructors, calendar and race results csv to S3...")
-    upload_df_to_s3(bucket, f"raw/{year_data}/drivers.csv", year_drivers_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/constructors.csv", year_constructors_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/races.csv", year_races_calendar_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/results.csv", year_results_df)
+    upload_df_to_s3(bucket, f"raw/{year_data}/drivers/drivers.csv", year_drivers_df)
+    upload_df_to_s3(bucket, f"raw/{year_data}/constructors/constructors.csv", year_constructors_df)
+    upload_df_to_s3(bucket, f"raw/{year_data}/races/races.csv", year_races_calendar_df)
+    upload_df_to_s3(bucket, f"raw/{year_data}/results/results.csv", year_results_df)
 
     return {
         "statusCode": 200,
