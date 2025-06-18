@@ -32,7 +32,7 @@ def get_constructors_df(year):
     constructors_list = response.json()['MRData']['ConstructorTable']['Constructors']
     return pd.json_normalize(constructors_list)
 
-def get_calendar_df(year):
+def get_races_calendar_df(year):
     """ Retrieves Formula 1 calendar races data for a given year from the Ergast API.
     Parameters: year (int or str): The season year to fetch data for.
     Returns: pandas.DataFrame: A DataFrame with calendar races details. """
@@ -47,21 +47,37 @@ def get_races_results_df(year, year_races_calendar_df):
     Parameters: year (int or str): The season year to fetch data for.
     Returns: pandas.DataFrame: A DataFrame with calendar races details. """
     
+    # Start season races pd df
     races_df = pd.DataFrame()
+
+    # Get season length
     season_length = len(year_races_calendar_df.index)
 
+    # For each race
     for round_index in range(1,season_length+1):
-        url = f"{ergast_base_url}/{year}/{round_index}/results"
-        response = requests.get(url)
         try:
+            url = f"{ergast_base_url}/{year}/{round_index}/results"
+            response = requests.get(url)
+
+            # Get race result into a pd df
             race_result_df = pd.json_normalize(response.json()['MRData']['RaceTable']['Races'][0]['Results'])
+
+            # Add circuit id, season year, round id
+            race_row = year_races_calendar_df.loc[year_races_calendar_df['round'].astype(int) == round_index]
+            race_row = race_row.to_dict(orient='records')[0]
+
+            race_result_df['raceRoundId'] = race_row['round']
+            race_result_df['seasonYear'], race_result_df['circuitId'] = race_row['season'], race_row['Circuit.circuitId']
+
+            # Add race result df to season races df
             races_df = pd.concat([races_df, race_result_df], ignore_index=True)
         except:
-            break
-    
-    races_df = races_df[['number','position','positionText','points','grid','laps','status'
-        ,'position','Driver.permanentNumber','Driver.code'
-        ,'Constructor.constructorId','Time.millis','Time.time','FastestLap.rank','FastestLap.lap','FastestLap.Time.time']]
+            # If no more races
+            break 
+
+    # Keep these columns 
+    races_df = races_df[['number','position','positionText','points','grid','laps','status','position','Driver.permanentNumber','Driver.code'
+        ,'Constructor.constructorId','Time.millis','Time.time','FastestLap.rank','FastestLap.lap','FastestLap.Time.time','raceRoundId','seasonYear','circuitId']]
     
     return races_df
 
@@ -78,18 +94,18 @@ def upload_df_to_s3(bucket, key, df):
 
 def lambda_handler(event, context):
     # Get data to dataframes
-    print("Fetching drivers, calendar and race results info...")
+    print("Fetching drivers, constructors, calendar and race results info...")
     year_drivers_df = get_drivers_df(year_data)
     year_constructors_df = get_constructors_df(year_data)
-    year_races_calendar_df = get_calendar_df(year_data)
-    #year_results_df = get_races_results_df(year_data, year_races_calendar_df)
+    year_races_calendar_df = get_races_calendar_df(year_data)
+    year_results_df = get_races_results_df(year_data, year_races_calendar_df)
 
     # Upload to S3
-    print("Uploading drivers, calendar and race results csv to S3...")
+    print("Uploading drivers, constructors, calendar and race results csv to S3...")
     upload_df_to_s3(bucket, f"raw/{year_data}/drivers.csv", year_drivers_df)
     upload_df_to_s3(bucket, f"raw/{year_data}/constructors.csv", year_constructors_df)
     upload_df_to_s3(bucket, f"raw/{year_data}/races.csv", year_races_calendar_df)
-    #upload_df_to_s3(bucket, f"raw/{year_data}/results.csv", year_results_df)
+    upload_df_to_s3(bucket, f"raw/{year_data}/results.csv", year_results_df)
 
     return {
         "statusCode": 200,
