@@ -1,5 +1,4 @@
-# f1-data-lake-by-year
-## F1 Data Lake & Analysis on AWS
+# Formula 1 Data Lake & Analysis on AWS
 
 <img src="https://github.com/user-attachments/assets/57f39ce2-7899-40d2-9121-02c367975a4e" alt="drawing" height="60%" />
 
