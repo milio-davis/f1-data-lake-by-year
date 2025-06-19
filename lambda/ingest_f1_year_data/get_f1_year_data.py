@@ -102,8 +102,8 @@ def get_races_results_df(year, year_races_calendar_df):
             # Add circuit id, season year, round id
             race_row = year_races_calendar_df.loc[year_races_calendar_df['round'].astype(int) == round_index]
 
-            race_result_df['raceRoundId'] = race_row['round']
-            race_result_df['seasonYear'], race_result_df['circuitId'] = race_row['season'], race_row['circuit_id']
+            race_result_df['raceRoundId'] = race_row['round'].values[0]
+            race_result_df['seasonYear'], race_result_df['circuitId'] = race_row['season'].values[0], race_row['circuit_id'].values[0]
 
             # Add race result df to season races df
             races_df = pd.concat([races_df, race_result_df], ignore_index=True)
