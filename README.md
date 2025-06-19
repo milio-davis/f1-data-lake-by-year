@@ -11,6 +11,11 @@ Goal: Build a centralized data lake for historical F1 race data. This project de
 AWS Tech Stack:
 1. *Lambda Python: Public F1 API data ingestion*
 2. *S3: Raw CSV data storage*
-3. *Glue: Crawler, Data & Schema Catalog*
+3. *Glue: Data crawler, Schema Catalog and Database population*
 4. *Athena: SQL-based analysis*
 5. *QuickSight: Dashboard*
+
+- Serverless
+- Cloud-based
+- Automated
+- Structured
