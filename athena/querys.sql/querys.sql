@@ -38,14 +38,14 @@ ORDER BY total_races DESC;
 
 -- 5. Driver performance at a specific circuit (e.g., monza)
 SELECT 
-    r.year, 
-    d.driverRef, 
+    r.season, 
+    d.given_name, 
     res.position
-FROM f1_results res
-JOIN f1_races r ON res.raceId = r.raceId
-JOIN f1_drivers d ON res.driverId = d.driverId
-WHERE r.circuitRef = 'monza'
-ORDER BY r.year DESC, res.position;
+FROM results res
+JOIN races r ON res.race_round_id = r.round
+JOIN drivers d ON res.driver_code = d.code
+WHERE r.race_name = 'Australian Grand Prix'
+ORDER BY r.season DESC, res.position;
 
 -- 6. First race year for each driver
 SELECT 
