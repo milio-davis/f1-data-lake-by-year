@@ -1,4 +1,4 @@
--- 1. Top 10 drivers with the most race wins
+-- 1. Top drivers with the most race wins
 SELECT 
     res.driver_code, 
     COUNT(*) AS wins,
@@ -27,7 +27,6 @@ SELECT
     driverRef,
     AVG(CAST(position AS INT)) AS avg_finish
 FROM f1_results
-WHERE position != '\\N'  -- Filter out nulls or missing data
 GROUP BY driverRef
 ORDER BY avg_finish ASC
 LIMIT 10;
