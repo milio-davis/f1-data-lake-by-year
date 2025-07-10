@@ -32,5 +32,4 @@ Project screenshots:
 <img width="1450" height="600" alt="image" src="https://github.com/user-attachments/assets/a2e69fbf-1c82-4ac4-a7bc-13a0ccc334bd" />
 <img width="1450" height="600" alt="image" src="https://github.com/user-attachments/assets/7450272e-1455-4be3-868c-f9be0e0342d7" />
 
-
-
+<img width="1450" height="600" alt="image" src="https://github.com/user-attachments/assets/0865a749-5479-4a24-899f-baaacb66e725" />
