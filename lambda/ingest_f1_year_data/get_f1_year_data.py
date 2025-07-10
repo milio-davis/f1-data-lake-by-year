@@ -23,6 +23,8 @@ def get_drivers_df(year):
     drivers_list = response.json()['MRData']['DriverTable']['Drivers']
     drivers_df = pd.json_normalize(drivers_list)
     
+    drivers_df['season'] = year_data
+    
     # Rename columns
     drivers_df = drivers_df.rename(columns={'driverId': 'driver_id', 'permanentNumber': 'permanent_number', 'givenName': 'given_name'
         , 'familyName': 'family_name', 'dateOfBirth': 'birth_day'})
@@ -43,6 +45,8 @@ def get_constructors_df(year):
     constructors_list = response.json()['MRData']['ConstructorTable']['Constructors']
     constructors_df = pd.json_normalize(constructors_list)
     
+    constructors_df['season'] = year_data
+    
     # Rename columns
     constructors_df = constructors_df.rename(columns={'constructorId': 'constructor_id'})
     
@@ -58,9 +62,12 @@ def get_races_calendar_df(year):
     
     races_list = response.json()['MRData']['RaceTable']['Races']    
     races_df = pd.json_normalize(races_list)
+
+    races_df['season'] = year_data
     
     # Drop unnecessary columns
-    races_df.drop(['FirstPractice.time', 'SecondPractice.time', 'ThirdPractice.time'], axis=1, inplace=True)
+    races_df.drop(['FirstPractice.time', 'SecondPractice.time', 'ThirdPractice.time', 'SprintQualifying.date'
+        , 'SprintQualifying.time', 'Sprint.time', 'Qualifying.time'], axis=1, inplace=True, errors='ignore')
     
     # Rename columns
     races_df = races_df.rename(columns={'raceName': 'race_name', 'url': 'url_grand_prix'
@@ -68,14 +75,12 @@ def get_races_calendar_df(year):
         , 'Circuit.circuitName': 'name', 'Circuit.Location.lat': 'location_lat', 'Circuit.Location.long': 'location_long'
         , 'Circuit.Location.locality': 'location_locality', 'Circuit.Location.country': 'country'
         , 'FirstPractice.date': 'practice1_date', 'SecondPractice.date': 'practice2_date', 'ThirdPractice.date': 'practice3_date'
-        , 'Qualifying.date': 'qualifying_date', 'Qualifying.time': 'qualifying_time'
-        , 'Sprint.date': 'sprint_date', 'Sprint.time': 'sprint_time'
-        , 'SprintQualifying.date': 'sprint_qualy_date', 'SprintQualifying.time': 'sprint_qualy_time'})
+        , 'Qualifying.date': 'qualifying_date', 'Sprint.date': 'sprint_date'})
     
     # Assign types
     races_df = races_df.astype({'season': int, 'round': int, 'date': 'datetime64[ns]', 'location_lat': float, 'location_long': float
         , 'practice1_date': 'datetime64[ns]', 'practice2_date': 'datetime64[ns]', 'practice3_date': 'datetime64[ms]'
-        , 'qualifying_date': 'datetime64[ns]', 'sprint_date': 'datetime64[ns]', 'sprint_qualy_date': 'datetime64[ns]'})
+        , 'qualifying_date': 'datetime64[ns]', 'sprint_date': 'datetime64[ns]'})
     
     return races_df
 
@@ -104,7 +109,7 @@ def get_races_results_df(year, year_races_calendar_df):
 
             race_result_df['raceRoundId'] = race_row['round'].values[0]
             race_result_df['seasonYear'], race_result_df['circuitId'] = race_row['season'].values[0], race_row['circuit_id'].values[0]
-
+            
             # Add race result df to season races df
             races_df = pd.concat([races_df, race_result_df], ignore_index=True)
         except:
@@ -127,7 +132,7 @@ def get_races_results_df(year, year_races_calendar_df):
     races_df.fillna({'fastest_lap_rank': 0, 'fastest_lap_lap': 0, 'season': 0, 'race_round_id': 0}, inplace=True)
     
     # Assign types
-    races_df = races_df.astype({'driver_number': int, 'position': int, 'points': int, 'grid': int, 'laps': int
+    races_df = races_df.astype({'driver_number': int, 'position': int, 'points': float, 'grid': int, 'laps': int
         , 'driver_permanent_number': int, 'time_millis': float, 'fastest_lap_rank': int, 'fastest_lap_lap': int
         , 'race_round_id': int, 'season': int})
     
@@ -156,10 +161,10 @@ def lambda_handler(event, context):
 
     # Upload to S3
     print("Uploading drivers, constructors, calendar and race results csv to S3...")
-    upload_df_to_s3(bucket, f"raw/{year_data}/drivers/drivers.parquet", year_drivers_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/constructors/constructors.parquet", year_constructors_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/races/races.parquet", year_races_calendar_df)
-    upload_df_to_s3(bucket, f"raw/{year_data}/results/results.parquet", year_results_df)
+    upload_df_to_s3(bucket, f"raw/drivers/year={year_data}/drivers.parquet", year_drivers_df)
+    upload_df_to_s3(bucket, f"raw/constructors/year={year_data}/constructors.parquet", year_constructors_df)
+    upload_df_to_s3(bucket, f"raw/races/year={year_data}/races.parquet", year_races_calendar_df)
+    upload_df_to_s3(bucket, f"raw/results/year={year_data}/results.parquet", year_results_df)
 
     return {
         "statusCode": 200,
