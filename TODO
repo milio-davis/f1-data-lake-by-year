@@ -1,1 +1,1 @@
-Add images of Lambda, Athena and Quicksight on Main Readme
+Add Lambda function to run incremental crawler using an s3 upload notification
