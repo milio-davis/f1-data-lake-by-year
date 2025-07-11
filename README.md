@@ -4,7 +4,7 @@
 
 ![image](https://github.com/user-attachments/assets/580c2226-7a9d-4c73-92aa-9f49e83c10be)
 
-# Lambda + S3 + Glue + Athena + QuickSight
+# Lambda + S3 + Glue + Athena + QuickSight + IAM
 
 ## 🎯 Goal
 Build a centralized data lake for historical Formula 1 race data.  
@@ -25,6 +25,7 @@ This project demonstrates how to build a lightweight, serverless data lake on AW
    - Incremental partition crawling using Lambda + Crawler
 4. **Athena** – SQL-based analysis
 5. **QuickSight** – Interactive dashboards and visualizations
+6. **Identity and Access Management (IAM)** - Security and permissions
 
 ### 🧩 Incremental Crawling Automation
 To keep the data catalog always up-to-date without reprocessing the full dataset, the project includes:
