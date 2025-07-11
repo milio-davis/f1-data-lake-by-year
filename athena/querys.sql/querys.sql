@@ -24,12 +24,12 @@ ORDER BY podiums DESC
 
 -- 3. Average finish position by driver
 SELECT 
-    driverRef,
-    AVG(CAST(position AS INT)) AS avg_finish
-FROM f1_results
-GROUP BY driverRef
+    res.driver_code,
+    ROUND(AVG(res.position), 2) AS avg_finish
+FROM results res
+GROUP BY res.driver_code
 ORDER BY avg_finish ASC
-LIMIT 10;
+;
 
 -- 4. Number of races hosted by each circuit
 SELECT 
