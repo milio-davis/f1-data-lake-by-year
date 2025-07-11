@@ -6,13 +6,18 @@
 
 # Lambda + S3 + Glue + Athena + QuickSight
 
-### 🎯 Goal
+## 🎯 Goal
 Build a centralized data lake for historical Formula 1 race data.  
 This project demonstrates how to build a lightweight, serverless data lake on AWS using F1 data.
 
-## ⚙️ AWS Tech Stack
+## 📊 Project Highlights
+- Serverless and event-driven architecture
+- Cloud-native using AWS-native services only
+- Scalable and low-cost
+- Ready for interactive analysis in QuickSight
 
-1. **Lambda (Python)** – Public F1 API data ingestion
+## ⚙️ AWS Tech Stack
+1. **Lambda (Python)** – Public F1 API data ingestion on demand for a desired year
 2. **S3** – Raw Parquet data storage in partitioned folder structure
 3. **Glue** –  
    - Data Crawlers for schema discovery  
@@ -21,8 +26,7 @@ This project demonstrates how to build a lightweight, serverless data lake on AW
 4. **Athena** – SQL-based analysis
 5. **QuickSight** – Interactive dashboards and visualizations
 
-## 🧩 Incremental Crawling Automation
-
+### 🧩 Incremental Crawling Automation
 To keep the data catalog always up-to-date without reprocessing the full dataset, the project includes:
 
 ### ✅ Setup
@@ -30,7 +34,6 @@ To keep the data catalog always up-to-date without reprocessing the full dataset
   Data is stored as:
     - s3://bucket/raw/year=2025/drivers/drivers.parquet
     - s3://bucket/raw/year=2025/races/races.parquet
-
 - **Crawler configuration**:
 - Recrawl behavior: **“Recrawl new subfolders only”**
 - Partition keys: e.g., `year`
@@ -40,18 +43,11 @@ To keep the data catalog always up-to-date without reprocessing the full dataset
 A Python-based **Lambda function** automatically starts the incremental Glue crawler when new files are added to S3 (via S3 PUT events).
 
 ### 🐍 Lambda Function Overview
-
 - Validates crawler state (`READY`) before running
 - Starts the Glue crawler
 - Fully event-driven, no manual steps needed after deployment
 
-### 📊 Project Highlights
-- Serverless and event-driven architecture
-- Cloud-native using AWS-native services only
-- Scalable and low-cost
-- Ready for interactive analysis in QuickSight
-
-### 🏁 Project screenshots:
+## 🏁 Project screenshots:
 <img width="1450" height="600" alt="image" src="https://github.com/user-attachments/assets/10e5960e-7bc2-4d4c-94c7-c617623a3eed" />
 
 <img width="1450" height="600" alt="image" src="https://github.com/user-attachments/assets/029e22ca-e344-43a9-8e90-968a23e545b5" />
