@@ -85,7 +85,7 @@ def get_races_calendar_df(year):
     return races_df
 
 def get_races_results_df(year, year_races_calendar_df):
-    """ Retrieves Formula 1 calendar races data for a given year from the Ergast API.
+    """ Retrieves Formula 1 race results data for a given year from the Ergast API.
     Parameters: year (int or str): The season year to fetch data for.
     Returns: pandas.DataFrame: A DataFrame with calendar races details. """
     
@@ -139,7 +139,7 @@ def get_races_results_df(year, year_races_calendar_df):
     return races_df
 
 def upload_df_to_s3(bucket, key, df):
-    """Uploads a pandas DataFrame as a CSV file to an S3 bucket.
+    """Uploads a pandas DataFrame as a Parquet file to an S3 bucket.
     Parameters: bucket (str): Name of the target S3 bucket.
         key (str): S3 object key (path/filename).
         df (pandas.DataFrame): DataFrame to upload. """
@@ -160,7 +160,7 @@ def lambda_handler(event, context):
     year_results_df = get_races_results_df(year_data, year_races_calendar_df)
 
     # Upload to S3
-    print("Uploading drivers, constructors, calendar and race results csv to S3...")
+    print("Uploading drivers, constructors, calendar and race results Parquet files to S3...")
     upload_df_to_s3(bucket, f"raw/drivers/year={year_data}/drivers.parquet", year_drivers_df)
     upload_df_to_s3(bucket, f"raw/constructors/year={year_data}/constructors.parquet", year_constructors_df)
     upload_df_to_s3(bucket, f"raw/races/year={year_data}/races.parquet", year_races_calendar_df)
