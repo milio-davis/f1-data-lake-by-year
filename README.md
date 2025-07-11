@@ -32,16 +32,15 @@ To keep the data catalog always up-to-date without reprocessing the full dataset
 
 ### ✅ Setup
 - **Folder structure**:
-  Data is stored as:
+    Data is stored as:
     - s3://bucket/raw/year=2025/drivers/drivers.parquet
     - s3://bucket/raw/year=2025/races/races.parquet
 - **Crawler configuration**:
-- Recrawl behavior: **“Recrawl new subfolders only”**
-- Partition keys: e.g., `year`
-- One Glue table per subfolder (e.g., `drivers`, `races`)
-
+    - Recrawl behavior: **“Recrawl new subfolders only”**
+    - Partition keys: e.g., `year`
+    - One Glue table per subfolder (e.g., `drivers`, `races`)
 - **Trigger**:  
-A Python-based **Lambda function** automatically starts the incremental Glue crawler when new files are added to S3 (via S3 PUT events).
+    A Python-based **Lambda function** automatically starts the incremental Glue crawler when new files are added to S3 (via S3 PUT events).
 
 ### 🐍 Lambda Function Overview
 - Validates crawler state (`READY`) before running
